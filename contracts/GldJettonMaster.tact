@@ -1,22 +1,17 @@
-contract GldJettonMaster {
-    address admin;
-    address oracle;
-    int total_supply;
+message Mint {
+    to: Address;
+    amount: Int;
+}
 
-    init(address _admin, address _oracle) {
-        admin = _admin;
-        oracle = _oracle;
-        total_supply = 0;
+contract GldJettonMaster(admin: Address, oracle: Address, total_supply: Int) {
+    receive(msg: Mint) {
+        if (sender() != self.admin) {
+            throw(100);
+        }
+        self.total_supply += msg.amount;
     }
 
-    receave("mint") {
-        require(msg.sender = admin);
-        let to = msg.body.getAddress();
-        let amount = msg.body.getInt();
-        total_supply += amount;
-    }
-
-    get price(): int {
-        return oracle.run("price");
+    get fun get_total_supply(): Int {
+        return self.total_supply;
     }
 }

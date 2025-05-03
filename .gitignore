@@ -3,3 +3,8 @@ dist/
 build/
 .env
 *.log
+*.abi
+*.boc
+*.fc
+*.fif
+*.pkg

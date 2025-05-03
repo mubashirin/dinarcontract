@@ -1,27 +1,38 @@
-contract GldJettonWallet {
-    address owner;
-    int balance;
+message Transfer {
+    to: Address;
+    amount: Int;
+}
 
-    init(address _owner) {
-        owner = _owner;
-        balance = 0;
+message InternalTransfer {
+    amount: Int;
+}
+
+contract GldJettonWallet(owner: Address, balance: Int) {
+    receive(msg: Transfer) {
+        if (sender() != self.owner) {
+            throw(100);
+        }
+        if (self.balance < msg.amount) {
+            throw(101);
+        }
+
+        self.balance -= msg.amount;
+
+        send(SendParameters {
+            to: msg.to,
+            value: 0,
+            body: beginCell()
+                .storeUint(0x01, 32)
+                .storeInt(msg.amount, 64)
+                .endCell()
+        });
     }
 
-    receive("transfer") {
-        require(msg.sender == owner);
-        let to = msg.body.getAddress();
-        let amount = msg.body.getInt();
-        require(balance >= amount);
-        balance -= amount;
-        send(to, "internal_transfer", amount);
+    receive(msg: InternalTransfer) {
+        self.balance += msg.amount;
     }
 
-    receive("internal_transfer") {
-        let amount = msg.body.getInt();
-        balance += amount;
-    }
-
-    get get_balance(): int {
-        return balance;
+    get fun get_balance(): Int {
+        return self.balance;
     }
 }
