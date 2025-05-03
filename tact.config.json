@@ -1,0 +1,20 @@
+{
+    "contracts": [
+      {
+        "name": "oracle",
+        "path": "./contracts/Oracle.tact",
+        "output": "./build"
+      },
+      {
+        "name": "master",
+        "path": "./contracts/GldJettonMaster.tact",
+        "output": "./build"
+      },
+      {
+        "name": "wallet",
+        "path": "./contracts/GldJettonWallet.tact",
+        "output": "./build"
+      }
+    ]
+  }
+  
