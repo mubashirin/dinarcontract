@@ -1,0 +1,17 @@
+{
+  "name": "gld-ton-project",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tact --config tact.config.json",
+    "build:tact": "tact --config tact.config.json",
+    "test": "blueprint run tests",
+    "clean": "rm -rf build",
+    "dev": "tact --config tact.config.json -w"
+  },
+  "devDependencies": {
+    "ton-core": "^0.0.167",
+    "@ton-community/blueprint": "^0.12.0",
+    "typescript": "^5.4.0"
+  }
+}
